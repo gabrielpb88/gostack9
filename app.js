@@ -1,3 +1,23 @@
-const app = require('./server')
+const Express = require('express')
+const routes = require('./routes')
 
-app.listen(3333, () => { console.log('Servidor rodando na porta 3000') })
+require('./src/database')
+
+class App {
+  constructor () {
+    this.server = new Express()
+
+    this.middlewares()
+    this.routes()
+  }
+
+  middlewares () {
+    this.server.use(Express.json())
+  }
+
+  routes () {
+    this.server.use(routes)
+  }
+}
+
+module.exports = new App().server

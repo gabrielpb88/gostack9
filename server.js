@@ -1,9 +1,3 @@
-const express = require('express')
+const app = require('./app')
 
-class App {
-  constructor () {
-    this.server = new express()
-  }
-}
-
-module.exports = new App().server
+app.listen(3333, () => { console.log('Servidor rodando na porta 3000') })
