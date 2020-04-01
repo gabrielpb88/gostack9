@@ -1,8 +1,10 @@
 const Appointment = require('../models/Appointment')
 const Yup = require('yup')
-const { startOfHour, parseISO, isBefore } = require('date-fns')
+const { startOfHour, parseISO, isBefore, format } = require('date-fns')
+const { pt } = require('date-fns/locale/pt')
 const User = require('../models/User')
 const File = require('../models/File')
+const Notification = require('../schemas/Notification')
 
 class AppointmentController {
   async index (req, res) {
@@ -79,6 +81,18 @@ class AppointmentController {
       user_id: req.userId,
       provider_id,
       date: hourStart
+    })
+
+    const user = await User.findByPk(req.userId)
+    const formattedDate = format(
+      hourStart,
+      "'dia' dd 'de' MMMM', às' H:mm'h'",
+      { locale: pt }
+    )
+
+    await Notification.create({
+      content: `Novo agendamento de ${user.name} para ${formattedDate}`,
+      user: provider_id
     })
 
     return res.json(appointment)
