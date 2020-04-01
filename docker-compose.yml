@@ -14,3 +14,7 @@ services:
     environment: 
       PGADMIN_DEFAULT_EMAIL: 'user@email.com'
       PGADMIN_DEFAULT_PASSWORD: '123'
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'

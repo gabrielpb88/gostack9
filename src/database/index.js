@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const mongoose = require('mongoose')
 
 const User = require('../app/models/User')
 const File = require('../app/models/File')
@@ -11,6 +12,7 @@ const models = [User, File, Appointment]
 class Database {
   constructor () {
     this.init()
+    this.mongoose()
   }
 
   init () {
@@ -19,6 +21,11 @@ class Database {
     models
       .map(model => model.init(this.connection))
       .map(model => model.associate && model.associate(this.connection.models))
+  }
+
+  mongoose () {
+    this.mongoConnection = mongoose.connect('mongodb://localhost:27017/gobarber',
+      { useNewUrlParser: true, useFindAndModify: true })
   }
 }
 
