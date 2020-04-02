@@ -5,7 +5,8 @@ const { ptBR } = require('date-fns/locale')
 const User = require('../models/User')
 const File = require('../models/File')
 const Notification = require('../schemas/Notification')
-const Mail = require('../../lib/Mail')
+const Queue = require('../../lib/Queue')
+const CancellationMail = require('../jobs/CancellationMail')
 
 class AppointmentController {
   async index (req, res) {
@@ -133,20 +134,7 @@ class AppointmentController {
 
     await appointment.save()
 
-    await Mail.sendMail({
-      to: `${appointment.provider.name} <${appointment.provider.email}>`,
-      subject: 'Agendamento cancelado',
-      template: 'cancellation',
-      context: {
-        provider: appointment.provider.name,
-        user: appointment.user.name,
-        date: format(
-          appointment.date,
-          "'dia' dd 'de' MMMM', às' H:mm'h'",
-          { locale: ptBR }
-        )
-      }
-    })
+    await Queue.add(CancellationMail.key, { appointment })
 
     res.json(appointment)
   }
