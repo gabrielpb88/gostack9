@@ -1,5 +1,5 @@
 const Mail = require('../../lib/Mail')
-const { format } = require('date-fns')
+const { format, parseISO } = require('date-fns')
 const { ptBR } = require('date-fns/locale')
 
 class CancellationMail {
@@ -22,7 +22,7 @@ class CancellationMail {
         provider: appointment.provider.name,
         user: appointment.user.name,
         date: format(
-          appointment.date,
+          parseISO(appointment.date),
           "'dia' dd 'de' MMMM', às' H:mm'h'",
           { locale: ptBR }
         )
