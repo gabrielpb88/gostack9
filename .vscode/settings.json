@@ -6,5 +6,18 @@
         "source.fixAll.eslint": true
     },
     "editor.insertSpaces": true,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "sqltools.connections": [
+        {
+            "database": "gobarber",
+            "dialect": "PostgreSQL",
+            "isActive": true,
+            "isConnected": true,
+            "name": "docker",
+            "password": "docker",
+            "port": 5432,
+            "server": "localhost",
+            "username": "postgres"
+        }
+    ]
 }
